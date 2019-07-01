@@ -25,6 +25,18 @@ There are also common services used here:
 
 We will also use [Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/) with logs analytics to monitor all this infrastructure (and potentially the application).
 
-Finally, all the infrastructure will be describe using Terraform HCL manifests stored in [Azure DevOps Repos](https://docs.microsoft.com/en-us/azure/devops/repos/?view=azure-devops) and we will use [Azure DevOps Pipelines](https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/overview?view=azure-devops) to deploy all the infrastructure.
+Finally, all the infrastructure will be describe using Terraform HCL manifests stored in GitHub (this repository) and we will use [Azure DevOps Pipelines](https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/overview?view=azure-devops) to deploy all the infrastructure.
+
+*Note: technically speaking, the pipeline that automates Terraform deployment can be hosted in any other CI/CD tool, like Jenkins, for example.*
 
 As you can see, some parts of the infrastructure are specific for each environment, some other will be shared. This will help to illustrate how to handle deployments of different resources having different lifecycle.
+
+## Prerequisites
+
+In order to follow this documentation and try it by yourself, you need:
+
+- A Microsoft Azure account. You can create a free trial account [here](https://azure.microsoft.com/en-us/free/).
+- [Install Terraform](https://learn.hashicorp.com/terraform/getting-started/install.html) on your machine, if you want to experiment the scripts locally
+- Fork this repository into your GitHub account
+- An Azure DevOps organization. You can get started for free [here](https://azure.microsoft.com/en-us/services/devops/?nav=min) if you do not already use Azure DevOps
+
