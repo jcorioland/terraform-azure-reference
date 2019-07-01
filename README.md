@@ -41,9 +41,13 @@ In order to follow this documentation and try it by yourself, you need:
 - An Azure DevOps organization. You can get started for free [here](https://azure.microsoft.com/en-us/services/devops/?nav=min) if you do not already use Azure DevOps
 - Install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 
+If you are not familiar with Terraform yet, we strongly recommend that you follow the Terraform on Azure getting started guide on [this page](https://learn.hashicorp.com/terraform/azure/intro_az).
+
 ## Terraform State
 
-Terraform needs to maintain state between the deployment, to make sure to what needs to be deployed or removed. It comes with an Azure Storage driver that allows to automatically store this state into Azure Storage.
+Terraform needs to maintain state between the deployments, to make sure to what needs to be added or removed.
+
+Storing Terraform state remotely is a best practice to make sure you don't loose it across your different execution environment (from your machine to any CI/CD agent). It is possible to use Azure Storage as a remote backend for Terraform state.
 
 To initialize the the Azure Storage backend, you can execute the [scripts/init-remote-state-backend.sh](scripts/init-remote-state-backend.sh):
 
@@ -107,10 +111,45 @@ This script is responsible for:
 - Creating an Azure Key Vault
 - Storing the the Storage Account access key into a Key Vault secret named `tfstate-storage-key`
 
-Once completed, the script will print a the `terraform init` command line that can be used to init Terraform to use this backend, like:
+Once completed, the script will print a the `terraform init` command line that you will use later to init Terraform to use this backend, like:
 
 ```bash
 terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT_NAME" -backend-config="container_name=$CONTAINER_NAME" -backend-config="access_key=$(az keyvault secret show --name tfstate-storage-key --vault-name $KEYVAULT_NAME --query value -o tsv)" -backend-config="key=terraform-ref-architecture-tfstate"
 ```
 
-*Note: you don't need to execute the last command line. It will be used later.*
+*Note: If you are working with multiple cloud providers, you may not want to spare storage state into each provider. For this reason, you may want to look the [Terraform Cloud remote state management](https://www.hashicorp.com/blog/introducing-terraform-cloud-remote-state-management) that has been introduced by HashiCorp.*
+
+## Terraform modules
+
+### What are Terraform modules?
+
+[Terraform modules](https://www.terraform.io/docs/modules/index.html) are used to group together a set of resources that have the same lifecycle. It is not mandatory to use modules, but in some case it might be useful.
+
+Like all mechanisms that allow to mutualize/factorize code, modules can also be dangerous: you don't want to have a big module that contains everything that you need to deploy and make all the resources strongly coupled together. This could lead to a monolith that will be really hard to maintain and to deploy.
+
+Here are some questions that you can ask yourself for before writing a module:
+- Do have all the resources involved the same lifecycle?
+  - Will the resources be deployed all together all the time?
+  - Will the resources be updated all together all the time?
+  - Will the resources be destroyed all together all the time?
+- Is there multiple resources involved? If there is just one, the module is probably useless
+- From an architectural/functionnal perspective, does it makes sense to group all these resources together? (network, compute, storage etc...)
+- Does any of the resource involved depend from a resource that is not in this module?
+
+If the answer to these questions is `no` most of the time, then you probably don't need to write a module.
+
+Sometime, instead of writing a big module, it can be useful to write multiple ones and nest them together, depending on the scenario you want to cover.
+
+You can read more about Terraform modules on [this page of the Terraform documentation](https://www.terraform.io/docs/modules/index.html).
+
+### How to test Terraform modules?
+
+Like every piece of code, Terraform modules can be tested. [Terratest](https://github.com/gruntwork-io/terratest) is the tool I have used to write the test of the modules available in this repository.
+
+You can find more documentation about how to use Terratest to test Terraform modules developed for Azure [here](https://docs.microsoft.com/en-us/azure/terraform/terratest-in-terraform-modules).
+
+### Use Yeoman to generate your Terraform modules structure
+
+If you want to get started quickly with writing Terraform modules you can use Yeoman with the `az-terra-module` like described on [this page](https://docs.microsoft.com/en-us/azure/terraform/terraform-vscode-module-generator).
+
+It will generate all the structure for you, from Terraform HCL files to tests and Dockerfile.
