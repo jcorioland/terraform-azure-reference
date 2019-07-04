@@ -153,3 +153,4 @@ You can find more documentation about how to use Terratest to test Terraform mod
 If you want to get started quickly with writing Terraform modules you can use Yeoman with the `az-terra-module` like described on [this page](https://docs.microsoft.com/en-us/azure/terraform/terraform-vscode-module-generator).
 
 It will generate all the structure for you, from Terraform HCL files to tests and Dockerfile.
+
