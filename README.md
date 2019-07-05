@@ -154,9 +154,12 @@ If you want to get started quickly with writing Terraform modules you can use Ye
 
 It will generate all the structure for you, from Terraform HCL files to tests and Dockerfile.
 
-## Modules
+## Modules of this reference architecture 
 
 This reference architecture uses different Terraform module to deploy different set of components and deal with their different lifecyle:
 
+- **TODO** Common Module: contains all the common resources like ACR, KeyVault, Monitoring...
 - [Environment Base Module](tf/environment-base/README.md)
 - [Azure Kubernetes Module](tf/aks/README.md)
+- **TODO** Legacy ScaleSet Module: contains the TF script to deploy the legacy scale set into an environment
+- **TODO** PostgreSQL Module: contains the TF scripts to deploy PostgreSQL into an environment

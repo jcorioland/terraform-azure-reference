@@ -2,7 +2,7 @@
 
 This module is responsible for the deployment of Azure Kubernetes Service inside a given environment. The module is developed in its own repository [here](https://github.com/jcorioland/terraform-azure-ref-aks-module).
 
-The [environmnent-base](../environment-base/README.md) deployment has to be run before this one.
+The [environment-base](../environment-base/README.md) deployment has to be run before this one.
 
 # Usage
 
