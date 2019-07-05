@@ -154,3 +154,9 @@ If you want to get started quickly with writing Terraform modules you can use Ye
 
 It will generate all the structure for you, from Terraform HCL files to tests and Dockerfile.
 
+## Modules
+
+This reference architecture uses different Terraform module to deploy different set of components and deal with their different lifecyle:
+
+- [Environment Base Module](tf/environment-base/README.md)
+- [Azure Kubernetes Module](tf/aks/README.md)
