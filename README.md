@@ -49,7 +49,7 @@ Terraform needs to maintain state between the deployments, to make sure to what 
 
 Storing Terraform state remotely is a best practice to make sure you don't loose it across your different execution environment (from your machine to any CI/CD agent). It is possible to use Azure Storage as a remote backend for Terraform state.
 
-To initialize the the Azure Storage backend, you can execute the [scripts/init-remote-state-backend.sh](scripts/init-remote-state-backend.sh):
+To initialize the the Azure Storage backend, you have to execute the [scripts/init-remote-state-backend.sh](scripts/init-remote-state-backend.sh):
 
 ```bash
 #!/bin/bash
@@ -162,4 +162,4 @@ This reference architecture uses different Terraform module to deploy different 
 - [Environment Base Module](tf/environment-base/README.md)
 - [Azure Kubernetes Module](tf/aks/README.md)
 - **TODO** Legacy ScaleSet Module: contains the TF script to deploy the legacy scale set into an environment
-- **TODO** PostgreSQL Module: contains the TF scripts to deploy PostgreSQL into an environment
+- **TODO** MySQL Module: contains the TF scripts to deploy MySQL into an environment
