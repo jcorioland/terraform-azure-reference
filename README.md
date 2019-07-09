@@ -164,10 +164,12 @@ This module is defined in its own [GitHub repository](https://github.com/jcoriol
 
 [![Build Status](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_apis/build/status/jcorioland.terraform-azure-ref-common-module?branchName=master)](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_build/latest?definitionId=33&branchName=master)
 
+More documentation is availabel [here](tf/common/README.md).
+
 ### Core Environment Module
 
 It contains the base components for an environment (resource group, network...).
-It is defined directly in [this repository](tf/core/README.md).
+More documentation is availabel [here](tf/core/README.md).
 
 ### Azure Kubernetes Service Module
 
@@ -175,3 +177,5 @@ It contains everything needed to deploy an Azure Kubernetes Service cluster insi
 It is defined in its own [GitHub repository](https://github.com/jcorioland/terraform-azure-ref-aks-module).
 
 [![Build Status](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_apis/build/status/jcorioland.terraform-azure-ref-aks-module?branchName=master)](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_build/latest?definitionId=32&branchName=master)
+
+More documentation is availabel [here](tf/aks/README.md).
