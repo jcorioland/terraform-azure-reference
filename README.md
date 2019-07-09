@@ -158,8 +158,21 @@ It will generate all the structure for you, from Terraform HCL files to tests an
 
 This reference architecture uses different Terraform module to deploy different set of components and deal with their different lifecyle:
 
-- **TODO** Common Module: contains all the common resources like ACR, KeyVault, Monitoring...
-- [Core Module](tf/core/README.md)
-- [Azure Kubernetes Module](tf/aks/README.md)
-- **TODO** Legacy ScaleSet Module: contains the TF script to deploy the legacy scale set into an environment
-- **TODO** MySQL Module: contains the TF scripts to deploy MySQL into an environment
+### Common Module 
+
+It contains all the common resources like ACR, KeyVault...
+This module is defined in its own [GitHub repository](https://github.com/jcorioland/terraform-azure-ref-common-module).
+
+[![Build Status](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_apis/build/status/jcorioland.terraform-azure-ref-common-module?branchName=master)](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_build/latest?definitionId=33&branchName=master)
+
+### Core Environment Module
+
+It contains the base components for an environment (resource group, network...).
+It is defined directly in [this repository](tf/core/README.md).
+
+### Azure Kubernetes Service Module
+
+It contains everything needed to deploy an Azure Kubernetes Service cluster inside a given environment.
+It is defined in its own [GitHub repository](https://github.com/jcorioland/terraform-azure-ref-aks-module).
+
+[![Build Status](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_apis/build/status/jcorioland.terraform-azure-ref-aks-module?branchName=master)](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_build/latest?definitionId=32&branchName=master)
