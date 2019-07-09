@@ -9,12 +9,11 @@ This module is responsible for the deployment for all the core components and re
 # Usage
 
 ```bash
+$ENVIRONMENT_NAME="development"
+$LOCATION="westeurope"
+
 # init terraform and backend storage
-./init.sh
+./init.sh $ENVIRONMENT_NAME
 
-$ENVIRONMNENT_NAME=development
-$LOCATION=westeurope
-
-terraform plan -out "core.plan" -var env=$ENVIRONMNENT_NAME -var location=$LOCATION
-terraform apply "core.plan"
+terraform apply -var environment=$ENVIRONMENT_NAME -var location=$LOCATION -auto-approve
 ```

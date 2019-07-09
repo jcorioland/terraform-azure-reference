@@ -18,11 +18,14 @@ export TF_VAR_service_principal_client_secret=SP_CLIENT_SECRET
 Then run the following script to deploy in the `deployment environment`.
 
 ```bash
+$ENVIRONMENT_NAME="development"
+$LOCATION="westeurope"
+
 # init terraform and backend storage
-./init.sh
+./init.sh $ENVIRONMENT_NAME
 
-$ENVIRONMNENT_NAME=development
-$LOCATION=westeurope
-
-terraform apply -var env=$ENVIRONMNENT_NAME -var location=$LOCATION -var kubernetes_version="1.13.5"
+terraform apply -auto-approve \
+  -var env=$ENVIRONMENT_NAME \
+  -var location=$LOCATION \
+  -var kubernetes_version="1.13.5"
 ```
