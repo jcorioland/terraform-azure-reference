@@ -14,9 +14,8 @@ This repository guides you in deploying the following architecture on Microsoft 
 
 There are 3 environments (Dev, QA and Prod). Each of the environment contains:
 - An [Azure Kubernetes Service](https://docs.microsoft.com/en-us/azure/aks/intro-kubernetes) cluster, in its own virtual network
-- Some load balancers
-- A backend virtual network, that contains a [Virtual Machine Scale Set](https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview) hosting a "legacy application"
-- An [Azure Database for MySQL](https://docs.microsoft.com/en-us/azure/mysql/overview) service instance with [virtual network service endpoint](https://docs.microsoft.com/en-us/azure/mysql/concepts-data-access-and-security-vnet) so it can be reached by the legacy workloads and services running in AKS (Backend virtual network and AKS virtual network are peered together)
+- A backend virtual network, that contains one or more virtual machines that act as bastion / jump boxes
+- An [Azure Database for MySQL](https://docs.microsoft.com/en-us/azure/mysql/overview) service instance with [virtual network service endpoint](https://docs.microsoft.com/en-us/azure/mysql/concepts-data-access-and-security-vnet) so it can be reached by jumbbox and services running in AKS (Backend virtual network and AKS virtual network are peered together)
 
 There are also common services used here:
 - [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/), to store the Docker image
