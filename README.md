@@ -145,14 +145,6 @@ You can read more about Terraform modules on [this page of the Terraform documen
 
 Like every piece of code, Terraform modules can be tested. [Terratest](https://github.com/gruntwork-io/terratest) is the tool I have used to write the test of the modules available in this repository.
 
-You can find more documentation about how to use Terratest to test Terraform modules developed for Azure [here](https://docs.microsoft.com/en-us/azure/terraform/terratest-in-terraform-modules).
-
-### Use Yeoman to generate your Terraform modules structure
-
-If you want to get started quickly with writing Terraform modules you can use Yeoman with the `az-terra-module` like described on [this page](https://docs.microsoft.com/en-us/azure/terraform/terraform-vscode-module-generator).
-
-It will generate all the structure for you, from Terraform HCL files to tests and Dockerfile.
-
 ## Modules of this reference architecture 
 
 This reference architecture uses different Terraform module to deploy different set of components and deal with their different lifecyle:
@@ -164,12 +156,12 @@ This module is defined in its own [GitHub repository](https://github.com/jcoriol
 
 [![Build Status](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_apis/build/status/jcorioland.terraform-azure-ref-common-module?branchName=master)](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_build/latest?definitionId=33&branchName=master)
 
-More documentation is availabel [here](tf/common/README.md).
+More documentation [here](tf/common/README.md).
 
 ### Core Environment Module
 
 It contains the base components for an environment (resource group, network...).
-More documentation is availabel [here](tf/core/README.md).
+More documentation [here](tf/core/README.md).
 
 ### Azure Kubernetes Service Module
 
@@ -178,4 +170,4 @@ It is defined in its own [GitHub repository](https://github.com/jcorioland/terra
 
 [![Build Status](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_apis/build/status/jcorioland.terraform-azure-ref-aks-module?branchName=master)](https://dev.azure.com/jcorioland-msft/terraform-azure-reference/_build/latest?definitionId=32&branchName=master)
 
-More documentation is availabel [here](tf/aks/README.md).
+More documentation [here](tf/aks/README.md).
