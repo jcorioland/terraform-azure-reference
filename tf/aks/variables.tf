@@ -18,6 +18,6 @@ variable "service_principal_client_secret" {
   description = "The client secret of the service principal to be used by AKS"
 }
 
-variable "ssh_public_key_file" {
-  description = "The SSH public key file to use with AKS"
+variable "ssh_public_key" {
+  description = "The SSH public key to use with AKS"
 }
