@@ -4,6 +4,8 @@ This repository helps you to implement Infrastructure as Code best practices usi
 
 If you are not familiar with Infrastructure as Code (IaC), read [this page](https://docs.microsoft.com/en-us/azure/devops/learn/what-is-infrastructure-as-code) first.
 
+***Note: this "reference architecture" is still a work in progress. If you have any question or feedback, feel free to open an issue to start the discussion :)***
+
 ## Overview of the architecture
 
 *Note: in this example we don't pay attention as the application that is deployed itself as the focus is on deploying the infrastructure.*
