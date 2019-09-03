@@ -1,0 +1,29 @@
+# This Azure Pipeline does nothing more than publishing each Terraform module artifacts
+# in order to make them available for a release pipeline
+
+trigger: none
+
+stages:
+  - stage: Publish
+    displayName: Publish Terraform modules artifacts
+    jobs:
+    - job: Publish
+      displayName: Publish Terraform modules artifacts
+      pool:
+        name: Hosted Ubuntu 1604
+      steps:
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Common Module as Pipeline Artifact'
+        inputs:
+          targetPath: tf/common
+          artifact: common
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Core Module as Pipeline Artifact'
+        inputs:
+          targetPath: tf/core
+          artifact: core
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish AKS Module as Pipeline Artifact'
+        inputs:
+          targetPath: tf/aks
+          artifact: aks
