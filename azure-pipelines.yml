@@ -40,7 +40,7 @@ stages:
         displayName: 'terraform init'
         inputs:
           command: init
-          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-azure-reference/common'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tf/common'
           backendType: azurerm
           backendServiceArm: $(azureSubscriptionServiceConnectionName)
           ensureBackend: true
