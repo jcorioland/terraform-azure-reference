@@ -5,7 +5,7 @@ trigger: none
 variables:
   vmImageName: 'ubuntu-latest'
   terraformVersion: 0.12.3
-  azureSubscriptionServiceConnectionName: 'jucoriol - Internal (b57ad57e-1e9a-4b32-8d28-30e957767ff3)'
+  azureSubscriptionServiceConnectionName: 'jucoriol'
   tfStateResourceGroupName: 'terraform-ref-fr-rg'
   tfStateAzureStorageAccountSku: 'Standard_LRS'
   tfStateAzureStorageAccountName: 'tfstate201910'
