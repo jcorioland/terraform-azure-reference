@@ -66,6 +66,8 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/tf/common'
           environmentServiceName: $(azureSubscriptionServiceConnectionName)
           commandOptions: '-auto-approve -var location=$(location) -var tenant_id=$(tenantId)'
+  - stage: Core Networking Module
+    jobs:
     # Core Networking Module
     - job: CoreNetworking
       displayName: Deploy the Terraform Core Networking module
@@ -107,6 +109,8 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/tf/core'
           environmentServiceName: $(azureSubscriptionServiceConnectionName)
           commandOptions: '-auto-approve -var location=$(location) -var environment=$(environmentName)'
+  - stage: Azure Kubernetes Module
+    jobs:
     # Azure Kubernetes Service Module
     - job: AzureKubernetesModule
       displayName: Deploy the Terraform Azure Kubernetes Service module
