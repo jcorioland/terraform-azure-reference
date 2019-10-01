@@ -34,7 +34,7 @@ stages:
       - task: InstallSSHKey@0
         displayName: 'Install an SSH key'
         inputs:
-          knownHostsEntry: $(sshKnowHostsEntry)
+          knownHostsEntry: $(sshKnownHostsEntry)
           sshPublicKey: $(sshPublicKey)
           sshKeySecureFile: $(sshKeySecureFileName)
       - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
