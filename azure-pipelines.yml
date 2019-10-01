@@ -5,12 +5,12 @@ trigger: none
 variables:
   vmImageName: 'ubuntu-latest'
   terraformVersion: 0.12.3
-  azureSubscriptionServiceConnectionName: jucoriol - Internal (b57ad57e-1e9a-4b32-8d28-30e957767ff3)
-  tfStateResourceGroupName: terraform-ref-fr-rg
-  tfStateStorageAccountSku: Standard_LRS
-  tfStateAzureStorageAccountName: tfstate201910
-  tfStateContainerName: tfstate-ref
-  tfStateKey: common.tfstate
+  azureSubscriptionServiceConnectionName: 'jucoriol - Internal (b57ad57e-1e9a-4b32-8d28-30e957767ff3)'
+  tfStateResourceGroupName: 'terraform-ref-fr-rg'
+  tfStateAzureStorageAccountSku: 'Standard_LRS'
+  tfStateAzureStorageAccountName: 'tfstate201910'
+  tfStateContainerName: 'tfstate-ref'
+  tfStateKey: 'common.tfstate'
   # This pipeline uses variables and secrets defined in the Azure DevOps portal (see: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables)
   # location: the Azure region where to deploy
   # tenantId: the identifier of the Azure tenant
