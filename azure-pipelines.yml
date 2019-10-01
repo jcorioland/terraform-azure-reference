@@ -23,6 +23,7 @@ variables:
 
 stages:
   - stage: CommonModule
+    displayName: Common Module
     jobs:
     # Common Module
     - job: CommonModule
@@ -66,6 +67,7 @@ stages:
           environmentServiceName: $(azureSubscriptionServiceConnectionName)
           commandOptions: '-auto-approve -var location=$(location) -var tenant_id=$(tenantId)'
   - stage: CoreNetworkingModule
+    displayName: Core Networking Module
     jobs:
     # Core Networking Module
     - job: CoreNetworkingModule
@@ -109,6 +111,7 @@ stages:
           environmentServiceName: $(azureSubscriptionServiceConnectionName)
           commandOptions: '-auto-approve -var location=$(location) -var environment=$(environmentName)'
   - stage: AzureKubernetesModule
+    displayName: Azure Kubernetes Service Module
     jobs:
     # Azure Kubernetes Service Module
     - job: AzureKubernetesModule
