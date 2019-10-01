@@ -23,10 +23,10 @@ variables:
   # sshKnownHostsEntry: the SSH known hosts entry
 
 stages:
-  - stage: Common Module
+  - stage: CommonModule
     jobs:
     # Common Module
-    - job: CommonJob
+    - job: CommonModule
       displayName: Deploy the Terraform Common module
       pool:
         vmImage: $(vmImageName)
@@ -66,10 +66,10 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/tf/common'
           environmentServiceName: $(azureSubscriptionServiceConnectionName)
           commandOptions: '-auto-approve -var location=$(location) -var tenant_id=$(tenantId)'
-  - stage: Core Networking Module
+  - stage: CoreNetworkingModule
     jobs:
     # Core Networking Module
-    - job: CoreNetworking
+    - job: CoreNetworkingModule
       displayName: Deploy the Terraform Core Networking module
       pool:
         vmImage: $(vmImageName)
@@ -109,7 +109,7 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/tf/core'
           environmentServiceName: $(azureSubscriptionServiceConnectionName)
           commandOptions: '-auto-approve -var location=$(location) -var environment=$(environmentName)'
-  - stage: Azure Kubernetes Module
+  - stage: AzureKubernetesModule
     jobs:
     # Azure Kubernetes Service Module
     - job: AzureKubernetesModule
