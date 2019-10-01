@@ -14,13 +14,18 @@ variables:
   # This pipeline uses variables and secrets defined in the Azure DevOps portal (see: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables)
   # location: the Azure region where to deploy
   # tenantId: the identifier of the Azure tenant
+  # environmentName: the name of the environment to deploy
+  # kubernetesVersion: the Kubernetes version to deploy
+  # aksServicePrincipalClientId: the service principal identifier to use with AKS
+  # aksServicePrincipalClientSecret: the service principal secret to use with AKS
   # sshKeySecureFileName: a secure file that contains the SSH private key to use
   # sshPublicKey: the SSH public key to use
   # sshKnownHostsEntry: the SSH known hosts entry
 
 stages:
-  - stage: Common
+  - stage: Common Module
     jobs:
+    # Common Module
     - job: CommonJob
       displayName: Deploy the Terraform Common module
       pool:
@@ -61,3 +66,85 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/tf/common'
           environmentServiceName: $(azureSubscriptionServiceConnectionName)
           commandOptions: '-auto-approve -var location=$(location) -var tenant_id=$(tenantId)'
+    # Core Networking Module
+    - job: CoreNetworking
+      displayName: Deploy the Terraform Core Networking module
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+      - task: InstallSSHKey@0
+        displayName: 'Install an SSH key'
+        inputs:
+          knownHostsEntry: $(sshKnowHostsEntry)
+          sshPublicKey: $(sshPublicKey)
+          sshKeySecureFile: $(sshKeySecureFileName)
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+        displayName: 'Use Terraform $(terraformVersion)'
+        inputs:
+          terraformVersion: $(terraformVersion)
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        displayName: 'terraform init'
+        inputs:
+          command: init
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tf/core'
+          backendType: azurerm
+          backendServiceArm: $(azureSubscriptionServiceConnectionName)
+          ensureBackend: true
+          backendAzureRmResourceGroupLocation: $(location)
+          backendAzureRmResourceGroupName: $(tfStateResourceGroupName)
+          backendAzureRmStorageAccountName: $(tfStateAzureStorageAccountName)
+          backendAzureRmStorageAccountSku: $(tfStateAzureStorageAccountSku)
+          backendAzureRmContainerName: $(tfStateContainerName)
+          backendAzureRmKey: $(tfStateKey)
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        displayName: 'terraform validate'
+        inputs:
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tf/core'
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        displayName: 'terraform apply'
+        inputs:
+          command: apply
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tf/core'
+          environmentServiceName: $(azureSubscriptionServiceConnectionName)
+          commandOptions: '-auto-approve -var location=$(location) -var environment=$(environmentName)'
+    # Azure Kubernetes Service Module
+    - job: AzureKubernetesModule
+      displayName: Deploy the Terraform Azure Kubernetes Service module
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+      - task: InstallSSHKey@0
+        displayName: 'Install an SSH key'
+        inputs:
+          knownHostsEntry: $(sshKnowHostsEntry)
+          sshPublicKey: $(sshPublicKey)
+          sshKeySecureFile: $(sshKeySecureFileName)
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+        displayName: 'Use Terraform $(terraformVersion)'
+        inputs:
+          terraformVersion: $(terraformVersion)
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        displayName: 'terraform init'
+        inputs:
+          command: init
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tf/aks'
+          backendType: azurerm
+          backendServiceArm: $(azureSubscriptionServiceConnectionName)
+          ensureBackend: true
+          backendAzureRmResourceGroupLocation: $(location)
+          backendAzureRmResourceGroupName: $(tfStateResourceGroupName)
+          backendAzureRmStorageAccountName: $(tfStateAzureStorageAccountName)
+          backendAzureRmStorageAccountSku: $(tfStateAzureStorageAccountSku)
+          backendAzureRmContainerName: $(tfStateContainerName)
+          backendAzureRmKey: $(tfStateKey)
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        displayName: 'terraform validate'
+        inputs:
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tf/aks'
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        displayName: 'terraform apply'
+        inputs:
+          command: apply
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tf/aks'
+          environmentServiceName: $(azureSubscriptionServiceConnectionName)
+          commandOptions: '-auto-approve -var location=$(location) -var environment=$(environmentName) -var kubernetes_version=$(kubernetesVersion) -var service_principal_client_id="$(aksServicePrincipalClientId)" -var service_principal_client_secret="$(aksServicePrincipalClientSecret)" -var ssh_public_key="$(sshPublicKey)"'
