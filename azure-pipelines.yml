@@ -7,7 +7,8 @@ variables:
   terraformVersion: 0.12.3
   azureSubscriptionServiceConnectionName: 'jucoriol - Internal (b57ad57e-1e9a-4b32-8d28-30e957767ff3)'
   tfStateResourceGroupName: 'terraform-ref-rg'
-  tfStateAzureStorageAccountName: 'tfstate2195'
+  tfStateStorageAccountSku: 'Standard_LRS'
+  tfStateAzureStorageAccountName: 'tfstate201910'
   tfStateContainerName: 'tfstate-ref'
   tfStateKey: 'common.tfstate'
   # This pipeline uses variables and secrets defined in the Azure DevOps portal (see: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables)
@@ -42,8 +43,11 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-azure-reference/common'
           backendType: azurerm
           backendServiceArm: $(azureSubscriptionServiceConnectionName)
+          ensureBackend: true
+          backendAzureRmResourceGroupLocation: $(location)
           backendAzureRmResourceGroupName: $(tfStateResourceGroupName)
           backendAzureRmStorageAccountName: $(tfStateAzureStorageAccountName)
+          backendAzureRmStorageAccountSku: $(tfStateAzureStorageAccountSku)
           backendAzureRmContainerName: $(tfStateContainerName)
           backendAzureRmKey: $(tfStateKey)
       - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
