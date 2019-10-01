@@ -1,29 +1,59 @@
-# This Azure Pipeline does nothing more than publishing each Terraform module artifacts
-# in order to make them available for a release pipeline
+# Azure Pipeline that deploys the whole infrastructure continuously, using Terraform
 
 trigger: none
 
+variables:
+  vmImageName: 'ubuntu-latest'
+  terraformVersion: 0.12.3
+  azureSubscriptionServiceConnectionName: 'jucoriol - Internal (b57ad57e-1e9a-4b32-8d28-30e957767ff3)'
+  tfStateResourceGroupName: 'terraform-ref-rg'
+  tfStateAzureStorageAccountName: 'tfstate2195'
+  tfStateContainerName: 'tfstate-ref'
+  tfStateKey: 'common.tfstate'
+  # This pipeline uses variables and secrets defined in the Azure DevOps portal (see: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables)
+  # location: the Azure region where to deploy
+  # tenantId: the identifier of the Azure tenant
+  # sshKeySecureFileName: a secure file that contains the SSH private key to use
+  # sshPublicKey: the SSH public key to use
+  # sshKnownHostsEntry: the SSH known hosts entry
+
 stages:
-  - stage: Publish
-    displayName: Publish Terraform modules artifacts
+  - stage: Common
     jobs:
-    - job: Publish
-      displayName: Publish Terraform modules artifacts
+    - job: CommonJob
+      displayName: Deploy the Terraform Common module
       pool:
-        name: Hosted Ubuntu 1604
+        vmImage: $(vmImageName)
       steps:
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish Common Module as Pipeline Artifact'
+      - task: InstallSSHKey@0
+        displayName: 'Install an SSH key'
         inputs:
-          targetPath: tf/common
-          artifact: common
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish Core Module as Pipeline Artifact'
+          knownHostsEntry: $(sshKnownHostsEntry)
+          sshPublicKey: $(sshPublicKey)
+          sshKeySecureFile: $(sshKeySecureFileName)
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+        displayName: 'Use Terraform $(terraformVersion)'
         inputs:
-          targetPath: tf/core
-          artifact: core
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish AKS Module as Pipeline Artifact'
+          terraformVersion: $(terraformVersion)
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        displayName: 'terraform init'
         inputs:
-          targetPath: tf/aks
-          artifact: aks
+          command: init
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-azure-reference/common'
+          backendType: azurerm
+          backendServiceArm: $(azureSubscriptionServiceConnectionName)
+          backendAzureRmResourceGroupName: $(tfStateResourceGroupName)
+          backendAzureRmStorageAccountName: $(tfStateAzureStorageAccountName)
+          backendAzureRmContainerName: $(tfStateContainerName)
+          backendAzureRmKey: $(tfStateKey)
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        displayName: 'terraform validate'
+        inputs:
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-azure-reference/common'
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        displayName: 'terraform apply'
+        inputs:
+          command: apply
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-azure-reference/common'
+          environmentServiceName: $(azureSubscriptionServiceConnectionName)
+          commandOptions: '-auto-approve -var location=$(location) -var tenant_id=$(tenantId)'
