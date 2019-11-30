@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "task-init-remote-state-backend",
+      "appliesTo": "scripts/init-remote-state-backend.sh",
+      "type": "launch"
+    }
+  ]
+}
