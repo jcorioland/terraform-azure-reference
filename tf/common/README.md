@@ -8,13 +8,11 @@ This modules is responsible for deploying the common stuff required for the refe
 Fill environment variables and run script:
 
 ```bash
-$LOCATION="westeurope"
-$TENANT_ID="YOUR AZURE TENANT ID"
+export TF_VAR_location="francecentral"
+export TF_VAR_tenant_id="<YOUR_TENANT_ID>"
 
 # init terraform and backend storage
 ./init.sh
 
-terraform apply -auto-approve \
-  -var location=$LOCATION \
-  -var tenant_id=$TENANT_ID
+terraform apply -auto-approve
 ```

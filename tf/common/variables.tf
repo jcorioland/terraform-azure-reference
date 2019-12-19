@@ -5,3 +5,4 @@ variable "location" {
 variable "tenant_id" {
   description = "The Azure tenant id"
 }
+

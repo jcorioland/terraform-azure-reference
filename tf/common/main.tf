@@ -3,11 +3,13 @@ provider "azurerm" {
 }
 
 terraform {
-  backend "azurerm" {}
+  backend "azurerm" {
+  }
 }
 
 module "common" {
   source    = "git@github.com:jcorioland/terraform-azure-ref-common-module"
-  location  = "${var.location}"
-  tenant_id = "${var.tenant_id}"
+  location  = var.location
+  tenant_id = var.tenant_id
 }
+
