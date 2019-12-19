@@ -11,21 +11,21 @@ Create a service principal for Azure Kubernetes Service, following [this documen
 Export service principal client id and client secret into Terraform environment variables:
 
 ```bash
-export TF_VAR_service_principal_client_id=SP_CLIENT_ID
-export TF_VAR_service_principal_client_secret=SP_CLIENT_SECRET
+export TF_VAR_service_principal_client_id="<YOUR_SP_CLIENT_ID>"
+export TF_VAR_service_principal_client_secret="<YOUR_SP_CLIENT_SECRET>"
+export TF_VAR_environment                     = "development"
+export TF_VAR_location                        = "francecentral"
+export TF_VAR_kubernetes_version              = "1.15.5"
+export TF_VAR_ssh_public_key                  = "<YOUR_SSH_PUBLIC_KEY>"
 ```
 
 Then run the following script to deploy in the `deployment environment`.
 
 ```bash
 ENVIRONMENT_NAME="development"
-LOCATION="westeurope"
 
 # init terraform and backend storage
 ./init.sh $ENVIRONMENT_NAME
 
-terraform apply -auto-approve \
-  -var environment=$ENVIRONMENT_NAME \
-  -var location=$LOCATION \
-  -var kubernetes_version="1.13.5"
+terraform apply -auto-approve
 ```

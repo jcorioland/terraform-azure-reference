@@ -21,3 +21,4 @@ variable "service_principal_client_secret" {
 variable "ssh_public_key" {
   description = "The SSH public key to use with AKS"
 }
+
